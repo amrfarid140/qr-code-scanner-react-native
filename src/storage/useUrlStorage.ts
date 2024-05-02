@@ -11,6 +11,7 @@ interface UrlStorageReturn {
   readonly savedUrls: SavedUrl[];
 
   readonly addUrl: (url: string) => Promise<boolean>;
+  readonly deleteUrl: (url: string) => void;
 }
 
 const useUrlStorage = () =>
@@ -28,6 +29,18 @@ export const useStoredUrlsMutation = (): Omit<
   const [_, setUrls] = useUrlStorage();
 
   return {
+    deleteUrl: useCallback(
+      async (newUrl: string) => {
+        setUrls(prevValue => {
+          const urlsCopy = {
+            ...prevValue,
+          };
+          delete urlsCopy[newUrl];
+          return urlsCopy;
+        });
+      },
+      [setUrls],
+    ),
     addUrl: useCallback(
       async (newUrl: string) => {
         if (await Linking.canOpenURL(newUrl)) {

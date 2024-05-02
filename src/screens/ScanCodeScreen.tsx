@@ -66,7 +66,7 @@ export const ScanCodeScreen: React.FC = () => {
         setIsProcessingCode(false);
       }
     },
-    [addUrl, navigation, isProcessingCode],
+    [isProcessingCode, addUrl, navigation, animatedErrorVisibility],
   );
 
   if (status == null) {
