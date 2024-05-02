@@ -1,6 +1,16 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {FlatList, Text} from 'react-native';
+import {useStoredUrls} from '../storage/useUrlStorage.ts';
 
 export const UrlListScreen: React.FC<{}> = () => {
-  return <Text>URL List</Text>;
+  const storedUrls = useStoredUrls();
+  return (
+    <FlatList
+      data={storedUrls}
+      renderItem={info => {
+        return <Text>{info.item.name ?? info.item.url}</Text>;
+      }}
+      keyExtractor={item => item.url}
+    />
+  );
 };
