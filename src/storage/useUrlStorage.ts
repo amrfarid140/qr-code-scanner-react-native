@@ -1,6 +1,6 @@
 import {useMMKVObject} from 'react-native-mmkv';
-import {useCallback, useMemo} from 'react';
-import * as url from 'node:url';
+import {useCallback} from 'react';
+import {Linking} from 'react-native';
 
 interface SavedUrl {
   readonly name: string | null;
@@ -10,7 +10,7 @@ interface SavedUrl {
 interface UrlStorageReturn {
   readonly savedUrls: SavedUrl[];
 
-  readonly addUrl: (url: string) => void;
+  readonly addUrl: (url: string) => Promise<boolean>;
 }
 
 const useUrlStorage = () =>
@@ -29,15 +29,22 @@ export const useStoredUrlsMutation = (): Omit<
 
   return {
     addUrl: useCallback(
-      (newUrl: string) => {
-        //TODO: add validation
-        setUrls(prevValue => ({
-          ...prevValue,
-          url: {
-            url: newUrl,
-            name: null,
-          },
-        }));
+      async (newUrl: string) => {
+        if (await Linking.canOpenURL(newUrl)) {
+          setUrls(prevValue => {
+            console.log('AMR', prevValue);
+            return {
+              ...prevValue,
+              [newUrl]: {
+                url: newUrl,
+                name: null,
+              },
+            };
+          });
+          return true;
+        } else {
+          return false;
+        }
       },
       [setUrls],
     ),

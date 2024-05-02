@@ -1,6 +1,7 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   ActivityIndicator,
+  Animated,
   Button,
   StyleSheet,
   Text,
@@ -38,15 +39,34 @@ export const ScanCodeScreen: React.FC = () => {
   const [status, requestPermission] = useCameraPermissions();
   const {addUrl} = useStoredUrlsMutation();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
+  const animatedErrorVisibility = useRef(new Animated.Value(0)).current;
+  const [isProcessingCode, setIsProcessingCode] = useState(false);
+
   const onBarcodeScanned = useCallback(
-    (scanningResult: BarcodeScanningResult) => {
-      if (scanningResult.raw) {
+    async (scanningResult: BarcodeScanningResult) => {
+      if (scanningResult.raw && !isProcessingCode) {
+        setIsProcessingCode(true);
         Vibration.vibrate(300, false);
-        addUrl(scanningResult.raw);
-        navigation.goBack();
+        if (await addUrl(scanningResult.raw)) {
+          navigation.goBack();
+        } else {
+          Animated.timing(animatedErrorVisibility, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: true,
+          }).start();
+          setTimeout(() => {
+            Animated.timing(animatedErrorVisibility, {
+              toValue: 0,
+              duration: 100,
+              useNativeDriver: true,
+            }).start();
+          }, 5000);
+        }
+        setIsProcessingCode(false);
       }
     },
-    [addUrl, navigation],
+    [addUrl, navigation, isProcessingCode],
   );
 
   if (status == null) {
@@ -60,13 +80,28 @@ export const ScanCodeScreen: React.FC = () => {
   }
 
   return (
-    <CameraView
-      style={scanCodeStyles.cameraView}
-      onBarcodeScanned={onBarcodeScanned}
-      barcodeScannerSettings={{
-        barcodeTypes: ['qr'],
-      }}
-    />
+    <View style={{flexGrow: 1}}>
+      <Animated.View
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          width: '100%',
+          opacity: animatedErrorVisibility,
+          backgroundColor: 'red',
+          bottom: 40,
+          padding: 24,
+        }}>
+        <Text>The QR code does not contain a valid url</Text>
+      </Animated.View>
+
+      <CameraView
+        style={scanCodeStyles.cameraView}
+        onBarcodeScanned={onBarcodeScanned}
+        barcodeScannerSettings={{
+          barcodeTypes: ['qr'],
+        }}
+      />
+    </View>
   );
 };
 
