@@ -2,7 +2,7 @@ import {useMMKVObject} from 'react-native-mmkv';
 import {useCallback} from 'react';
 import {Linking} from 'react-native';
 
-interface SavedUrl {
+export interface SavedUrl {
   readonly name: string | null;
   readonly url: string;
 }
@@ -12,6 +12,7 @@ interface UrlStorageReturn {
 
   readonly addUrl: (url: string) => Promise<boolean>;
   readonly deleteUrl: (url: string) => void;
+  readonly updateUrlName: (url: string, name: string) => void;
 }
 
 const useUrlStorage = () =>
@@ -29,8 +30,22 @@ export const useStoredUrlsMutation = (): Omit<
   const [_, setUrls] = useUrlStorage();
 
   return {
+    updateUrlName: useCallback(
+      (url: string, newName: string) => {
+        setUrls(prevValue => {
+          return {
+            ...prevValue,
+            [url]: {
+              url,
+              name: newName,
+            },
+          };
+        });
+      },
+      [setUrls],
+    ),
     deleteUrl: useCallback(
-      async (newUrl: string) => {
+      (newUrl: string) => {
         setUrls(prevValue => {
           const urlsCopy = {
             ...prevValue,

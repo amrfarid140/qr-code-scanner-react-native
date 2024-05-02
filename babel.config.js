@@ -17,6 +17,7 @@ module.exports = {
         alias: {
           '@routing': './src/routing',
           '@screens': './src/screens',
+          '@components': './src/components',
         },
       },
     ],

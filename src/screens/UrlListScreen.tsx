@@ -1,30 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
+  Alert,
   Button,
   FlatList,
   Linking,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {
+  SavedUrl,
   useStoredUrls,
   useStoredUrlsMutation,
 } from '../storage/useUrlStorage.ts';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
+import {Popup} from '@components/Popup.tsx';
+import {UpdateUrlNameModal} from '@components/UpdateUrlNameModal.tsx';
 
 const ItemSeparator = () => <View style={styles.itemSeparator} />;
 
 export const UrlListScreen: React.FC = () => {
   const storedUrls = useStoredUrls();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
-  const {deleteUrl} = useStoredUrlsMutation();
+  const {deleteUrl, updateUrlName} = useStoredUrlsMutation();
+  const [selectedUrl, setSelectedUrl] = useState<SavedUrl | null>(null);
 
   return (
     <>
+      <UpdateUrlNameModal
+        animationType="fade"
+        transparent={true}
+        visible={selectedUrl !== null}
+        url={selectedUrl}
+        onHideModal={() => setSelectedUrl(null)}
+      />
       <FlatList
         data={storedUrls}
         renderItem={info => {
@@ -44,7 +58,10 @@ export const UrlListScreen: React.FC = () => {
                 )}
               </View>
               <Button title="Delete" onPress={() => deleteUrl(info.item.url)} />
-              <Button title="Update" />
+              <Button
+                title="Update name"
+                onPress={() => setSelectedUrl(info.item)}
+              />
             </Pressable>
           );
         }}
@@ -77,9 +94,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   subtitle: {
-    color: '#f5f5f5',
+    color: '#ababab',
     fontWeight: '300',
-    fontSize: 18,
+    fontSize: 16,
+    marginTop: 6,
   },
   buttonContainer: {
     position: 'absolute',
