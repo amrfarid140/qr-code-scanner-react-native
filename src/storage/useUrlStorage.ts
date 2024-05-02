@@ -32,7 +32,6 @@ export const useStoredUrlsMutation = (): Omit<
       async (newUrl: string) => {
         if (await Linking.canOpenURL(newUrl)) {
           setUrls(prevValue => {
-            console.log('AMR', prevValue);
             return {
               ...prevValue,
               [newUrl]: {

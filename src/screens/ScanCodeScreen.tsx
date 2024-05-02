@@ -80,17 +80,12 @@ export const ScanCodeScreen: React.FC = () => {
   }
 
   return (
-    <View style={{flexGrow: 1}}>
+    <>
       <Animated.View
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          width: '100%',
-          opacity: animatedErrorVisibility,
-          backgroundColor: 'red',
-          bottom: 40,
-          padding: 24,
-        }}>
+        style={[
+          scanCodeStyles.errorContainer,
+          {opacity: animatedErrorVisibility},
+        ]}>
         <Text>The QR code does not contain a valid url</Text>
       </Animated.View>
 
@@ -101,7 +96,7 @@ export const ScanCodeScreen: React.FC = () => {
           barcodeTypes: ['qr'],
         }}
       />
-    </View>
+    </>
   );
 };
 
@@ -109,6 +104,14 @@ const scanCodeStyles = StyleSheet.create({
   cameraView: {
     width: '100%',
     height: '100%',
+  },
+  errorContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    width: '100%',
+    backgroundColor: 'red',
+    bottom: 40,
+    padding: 24,
   },
 });
 
