@@ -57,12 +57,9 @@ export const UpdateUrlNameModal: React.FC<Props> = props => {
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              disabled={enteredName == null || enteredName.length < 1}
               onPress={() => {
-                if (enteredName) {
-                  updateUrlName(props.url!.url, enteredName);
-                  props.onHideModal();
-                }
+                updateUrlName(props.url!.url, enteredName);
+                props.onHideModal();
               }}>
               <Text style={styles.textStyle}>Save</Text>
             </Pressable>

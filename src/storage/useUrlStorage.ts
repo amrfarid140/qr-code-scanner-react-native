@@ -12,7 +12,7 @@ interface UrlStorageReturn {
 
   readonly addUrl: (url: string) => Promise<boolean>;
   readonly deleteUrl: (url: string) => void;
-  readonly updateUrlName: (url: string, name: string) => void;
+  readonly updateUrlName: (url: string, name: string | null) => void;
 }
 
 const useUrlStorage = () =>
@@ -31,13 +31,13 @@ export const useStoredUrlsMutation = (): Omit<
 
   return {
     updateUrlName: useCallback(
-      (url: string, newName: string) => {
+      (url: string, newName: string | null) => {
         setUrls(prevValue => {
           return {
             ...prevValue,
             [url]: {
               url,
-              name: newName,
+              name: newName != null && newName.length === 0 ? null : newName,
             },
           };
         });
