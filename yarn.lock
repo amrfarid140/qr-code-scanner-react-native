@@ -4353,6 +4353,13 @@ expo-asset@~10.0.4:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-camera@~15.0.3:
+  version "15.0.3"
+  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-15.0.3.tgz#65632f8a5fc7d0545ede09d0c0cff31a1336ae6c"
+  integrity sha512-PzkaRXHESRJVHyjyYFdv9UOqi61qzXmnAgYUIbmJ5WSnYiCLHkJOZf/mk1yiKotUmukgvJIkyarAn3dxe8cxwQ==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-constants@~16.0.0:
   version "16.0.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-16.0.1.tgz#1285e29c85513c6e88e118289e2baab72596d3f7"
