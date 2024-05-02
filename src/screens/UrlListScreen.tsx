@@ -1,32 +1,47 @@
-import React, {useCallback, useEffect} from 'react';
-import {Button, FlatList, Pressable, Text} from 'react-native';
+import React from 'react';
+import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useStoredUrls} from '../storage/useUrlStorage.ts';
-import {
-  NavigationProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
 
-export const UrlListScreen: React.FC<{}> = () => {
+export const UrlListScreen: React.FC = () => {
   const storedUrls = useStoredUrls();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
-  useFocusEffect(
-    useCallback(() => {
-      navigation.setOptions({
-        headerRight: () => (
-          <Button onPress={() => navigation.navigate('ScanCode')} title="Add" />
-        ),
-      });
-    }, [navigation]),
-  );
+
   return (
-    <FlatList
-      data={storedUrls}
-      renderItem={info => {
-        return <Text>{info.item.name ?? info.item.url}</Text>;
-      }}
-      keyExtractor={item => item.url}
-    />
+    <>
+      <FlatList
+        data={storedUrls}
+        renderItem={info => {
+          return <Text>{info.item.name ?? info.item.url}</Text>;
+        }}
+        keyExtractor={item => item.url}
+      />
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPressOut={() => navigation.navigate('ScanCode')}>
+        <Text style={styles.buttonText}>+</Text>
+      </TouchableOpacity>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    width: 48,
+    height: 48,
+    borderRadius: 100,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 24,
+  },
+});

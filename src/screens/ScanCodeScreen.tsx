@@ -34,7 +34,7 @@ const PermissionRequiredScreen: React.FC<{
   );
 };
 
-export const ScanCodeScreen: React.FC<{}> = () => {
+export const ScanCodeScreen: React.FC = () => {
   const [status, requestPermission] = useCameraPermissions();
   const {addUrl} = useStoredUrlsMutation();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
@@ -46,7 +46,7 @@ export const ScanCodeScreen: React.FC<{}> = () => {
         navigation.goBack();
       }
     },
-    [],
+    [addUrl, navigation],
   );
 
   if (status == null) {
@@ -61,7 +61,7 @@ export const ScanCodeScreen: React.FC<{}> = () => {
 
   return (
     <CameraView
-      style={{width: '100%', height: '100%'}}
+      style={scanCodeStyles.cameraView}
       onBarcodeScanned={onBarcodeScanned}
       barcodeScannerSettings={{
         barcodeTypes: ['qr'],
@@ -69,6 +69,13 @@ export const ScanCodeScreen: React.FC<{}> = () => {
     />
   );
 };
+
+const scanCodeStyles = StyleSheet.create({
+  cameraView: {
+    width: '100%',
+    height: '100%',
+  },
+});
 
 const permissionsStyles = StyleSheet.create({
   container: {
