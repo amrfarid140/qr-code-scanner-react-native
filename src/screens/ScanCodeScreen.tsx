@@ -8,16 +8,23 @@ import {
   Vibration,
   View,
 } from 'react-native';
-import {CameraView, useCameraPermissions} from 'expo-camera';
-import {BarcodeScanningResult} from 'expo-camera/build/Camera.types';
-import {useStoredUrlsMutation} from '../storage/useUrlStorage.ts';
+import {
+  CameraView,
+  useCameraPermissions,
+  BarcodeScanningResult,
+} from 'expo-camera';
+import {useStoredUrlsMutation} from '@storage/useUrlStorage.ts';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
 
 const LoadingScreen = () => {
   return (
     <View style={loadingStyles.container}>
-      <ActivityIndicator color="#000000" size="large" />
+      <ActivityIndicator
+        testID="loading-indicator"
+        color="#000000"
+        size="large"
+      />
     </View>
   );
 };
@@ -47,7 +54,8 @@ export const ScanCodeScreen: React.FC = () => {
       if (scanningResult.raw && !isProcessingCode) {
         setIsProcessingCode(true);
         Vibration.vibrate(300, false);
-        if (await addUrl(scanningResult.raw)) {
+        const isValid = await addUrl(scanningResult.raw);
+        if (isValid) {
           navigation.goBack();
         } else {
           Animated.timing(animatedErrorVisibility, {

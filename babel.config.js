@@ -18,6 +18,7 @@ module.exports = {
           '@routing': './src/routing',
           '@screens': './src/screens',
           '@components': './src/components',
+          '@storage': './src/storage',
         },
       },
     ],
