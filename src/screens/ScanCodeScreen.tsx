@@ -1,6 +1,17 @@
-import React from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
-import {useCameraPermissions} from 'expo-camera';
+import React, {useCallback} from 'react';
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  Vibration,
+  View,
+} from 'react-native';
+import {CameraView, useCameraPermissions} from 'expo-camera';
+import {BarcodeScanningResult} from 'expo-camera/build/Camera.types';
+import {useStoredUrlsMutation} from '../storage/useUrlStorage.ts';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {RootStackRoute} from '@routing/RootStackRoute.ts';
 
 const LoadingScreen = () => {
   return (
@@ -25,6 +36,18 @@ const PermissionRequiredScreen: React.FC<{
 
 export const ScanCodeScreen: React.FC<{}> = () => {
   const [status, requestPermission] = useCameraPermissions();
+  const {addUrl} = useStoredUrlsMutation();
+  const navigation = useNavigation<NavigationProp<RootStackRoute>>();
+  const onBarcodeScanned = useCallback(
+    (scanningResult: BarcodeScanningResult) => {
+      if (scanningResult.raw) {
+        Vibration.vibrate(300, false);
+        addUrl(scanningResult.raw);
+        navigation.goBack();
+      }
+    },
+    [],
+  );
 
   if (status == null) {
     return <LoadingScreen />;
@@ -35,7 +58,16 @@ export const ScanCodeScreen: React.FC<{}> = () => {
       <PermissionRequiredScreen onGrantPermissionsPressed={requestPermission} />
     );
   }
-  return <Text>ScanCodeScreen</Text>;
+
+  return (
+    <CameraView
+      style={{width: '100%', height: '100%'}}
+      onBarcodeScanned={onBarcodeScanned}
+      barcodeScannerSettings={{
+        barcodeTypes: ['qr'],
+      }}
+    />
+  );
 };
 
 const permissionsStyles = StyleSheet.create({

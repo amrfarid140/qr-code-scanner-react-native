@@ -1,21 +1,25 @@
-import React, {useEffect} from 'react';
-import {FlatList, Pressable, Text} from 'react-native';
+import React, {useCallback, useEffect} from 'react';
+import {Button, FlatList, Pressable, Text} from 'react-native';
 import {useStoredUrls} from '../storage/useUrlStorage.ts';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
 
 export const UrlListScreen: React.FC<{}> = () => {
   const storedUrls = useStoredUrls();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={() => navigation.navigate('ScanCode')}>
-          <Text>Add</Text>
-        </Pressable>
-      ),
-    });
-  }, [navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button onPress={() => navigation.navigate('ScanCode')} title="Add" />
+        ),
+      });
+    }, [navigation]),
+  );
   return (
     <FlatList
       data={storedUrls}

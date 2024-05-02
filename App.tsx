@@ -5,7 +5,6 @@ import {RootStackRoute} from '@routing/RootStackRoute.ts';
 import {ScanCodeScreen} from '@screens/ScanCodeScreen.tsx';
 import {SingleUrlScreen} from '@screens/SingleUrlScreen.tsx';
 import {UrlListScreen} from '@screens/UrlListScreen.tsx';
-import {Button, Pressable, Text} from 'react-native';
 
 const RootStackNavigator = createNativeStackNavigator<RootStackRoute>();
 
@@ -18,11 +17,6 @@ const App: () => React.JSX.Element = () => {
           component={UrlListScreen}
           options={{
             title: 'Saved Urls',
-            headerRight: () => (
-              <Pressable>
-                <Text>Add</Text>
-              </Pressable>
-            ),
           }}
         />
         <RootStackNavigator.Screen
