@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Alert,
   ModalProps,
   Pressable,
   StyleSheet,
@@ -30,33 +29,22 @@ export const UpdateUrlNameModal: React.FC<Props> = props => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>URL name</Text>
-          <View style={{flexDirection: 'row', width: '100%'}}>
+          <View style={styles.textInputContainer}>
             <TextInput
               placeholder="URL name"
               value={enteredName ?? undefined}
               onChangeText={setEnteredName}
-              style={{
-                flexGrow: 1,
-                borderWidth: 1,
-                borderRadius: 8,
-                marginVertical: 24,
-              }}
+              style={styles.textInput}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'flex-end',
-              gap: 12,
-            }}>
+          <View style={styles.buttonsContainer}>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={styles.button}
               onPress={() => props.onHideModal()}>
               <Text style={styles.textStyle}>Cancel</Text>
             </Pressable>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={styles.button}
               onPress={() => {
                 updateUrlName(props.url!.url, enteredName);
                 props.onHideModal();
@@ -92,15 +80,26 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  textInputContainer: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  textInput: {
+    flexGrow: 1,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginVertical: 24,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-end',
+    gap: 12,
+  },
   button: {
     borderRadius: 8,
     padding: 10,
     elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
     backgroundColor: '#2196F3',
   },
   textStyle: {
@@ -110,5 +109,6 @@ const styles = StyleSheet.create({
   },
   modalText: {
     textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

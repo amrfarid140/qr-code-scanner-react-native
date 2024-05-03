@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import {
-  Alert,
   Button,
   FlatList,
   Linking,
-  Modal,
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -19,7 +16,6 @@ import {
 } from '../storage/useUrlStorage.ts';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
-import {Popup} from '@components/Popup.tsx';
 import {UpdateUrlNameModal} from '@components/UpdateUrlNameModal.tsx';
 
 const ItemSeparator = () => <View style={styles.itemSeparator} />;
@@ -27,12 +23,13 @@ const ItemSeparator = () => <View style={styles.itemSeparator} />;
 export const UrlListScreen: React.FC = () => {
   const storedUrls = useStoredUrls();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
-  const {deleteUrl, updateUrlName} = useStoredUrlsMutation();
+  const {deleteUrl} = useStoredUrlsMutation();
   const [selectedUrl, setSelectedUrl] = useState<SavedUrl | null>(null);
 
   return (
     <>
       <UpdateUrlNameModal
+        testID="name-modal"
         animationType="fade"
         transparent={true}
         visible={selectedUrl !== null}
@@ -69,6 +66,7 @@ export const UrlListScreen: React.FC = () => {
         keyExtractor={item => item.url}
       />
       <TouchableOpacity
+        testID="scan-code"
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('ScanCode')}>
         <Text style={styles.buttonText}>Add</Text>

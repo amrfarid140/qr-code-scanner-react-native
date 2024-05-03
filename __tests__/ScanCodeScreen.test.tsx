@@ -33,13 +33,8 @@ describe('<ScanCodeScreen />', () => {
     );
   });
 
-  afterAll(() => {
-    Object.setPrototypeOf(
-      {
-        Vibration: ReactNative.Vibration,
-      },
-      ReactNative,
-    );
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
   it('renders loading screen while permissions check is loading', () => {
