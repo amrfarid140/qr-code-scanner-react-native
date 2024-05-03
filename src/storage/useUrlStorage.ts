@@ -77,4 +77,3 @@ export const useStoredUrlsMutation = (): Omit<
     ),
   };
 };
-//TODO: add update url name and delete url
