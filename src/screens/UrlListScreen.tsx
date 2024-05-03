@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   urlContainerText: {
+    color: 'black',
     width: '100%',
   },
   subtitle: {

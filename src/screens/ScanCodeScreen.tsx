@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -47,12 +47,12 @@ export const ScanCodeScreen: React.FC = () => {
   const {addUrl} = useStoredUrlsMutation();
   const navigation = useNavigation<NavigationProp<RootStackRoute>>();
   const animatedErrorVisibility = useRef(new Animated.Value(0)).current;
-  const [isProcessingCode, setIsProcessingCode] = useState(false);
+  const lastScannedUrl = useRef<string | null>(null);
 
   const onBarcodeScanned = useCallback(
     async (scanningResult: BarcodeScanningResult) => {
-      if (scanningResult.raw && !isProcessingCode) {
-        setIsProcessingCode(true);
+      if (scanningResult.raw && lastScannedUrl.current !== scanningResult.raw) {
+        lastScannedUrl.current = scanningResult.raw;
         Vibration.vibrate(300, false);
         const isValid = await addUrl(scanningResult.raw);
         if (isValid) {
@@ -71,10 +71,9 @@ export const ScanCodeScreen: React.FC = () => {
             }).start();
           }, 5000);
         }
-        setIsProcessingCode(false);
       }
     },
-    [isProcessingCode, addUrl, navigation, animatedErrorVisibility],
+    [lastScannedUrl, addUrl, navigation, animatedErrorVisibility],
   );
 
   if (status == null) {
@@ -132,6 +131,7 @@ const permissionsStyles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginBottom: 16,
+    color: 'black',
   },
 });
 

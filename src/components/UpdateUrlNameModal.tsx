@@ -33,6 +33,7 @@ export const UpdateUrlNameModal: React.FC<Props> = props => {
             <TextInput
               placeholder="URL name"
               value={enteredName ?? undefined}
+              placeholderTextColor="#ababab"
               onChangeText={setEnteredName}
               style={styles.textInput}
             />
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     marginVertical: 24,
+    color: 'black',
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -110,5 +112,6 @@ const styles = StyleSheet.create({
   modalText: {
     textAlign: 'center',
     fontWeight: 'bold',
+    color: 'black',
   },
 });
