@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  ModalProps,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {ModalProps, StyleSheet, Text, TextInput, View} from 'react-native';
 import {SavedUrl, useStoredUrlsMutation} from '../storage/useUrlStorage.ts';
 import {Popup} from '@components/Popup.tsx';
 import {PressableButton} from '@components/PressableButton.tsx';

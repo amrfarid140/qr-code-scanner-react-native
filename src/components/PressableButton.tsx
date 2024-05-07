@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  Pressable,
-  PressableProps,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {Pressable, PressableProps, StyleSheet, Text} from 'react-native';
 
 export interface PressableButtonProps
   extends Omit<PressableProps, 'style' | 'children' | 'android_ripple'> {
