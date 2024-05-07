@@ -2,7 +2,6 @@ import React, {useCallback, useRef} from 'react';
 import {
   ActivityIndicator,
   Animated,
-  Button,
   StyleSheet,
   Text,
   Vibration,
@@ -16,6 +15,7 @@ import {
 import {useStoredUrlsMutation} from '@storage/useUrlStorage.ts';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
+import {PressableButton} from '@components/PressableButton.tsx';
 
 const LoadingScreen = () => {
   return (
@@ -37,7 +37,10 @@ const PermissionRequiredScreen: React.FC<{
       <Text style={permissionsStyles.text}>
         We need your permission to access the device camera
       </Text>
-      <Button title="Grant Permissions" onPress={onGrantPermissionsPressed} />
+      <PressableButton
+        label="Grant Permissions"
+        onPress={onGrantPermissionsPressed}
+      />
     </View>
   );
 };

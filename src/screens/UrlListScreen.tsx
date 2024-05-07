@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Button,
   FlatList,
   Linking,
   Pressable,
@@ -17,6 +16,7 @@ import {
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {RootStackRoute} from '@routing/RootStackRoute.ts';
 import {UpdateUrlNameModal} from '@components/UpdateUrlNameModal.tsx';
+import {PressableButton} from '@components/PressableButton.tsx';
 
 const ItemSeparator = () => <View style={styles.itemSeparator} />;
 
@@ -54,9 +54,12 @@ export const UrlListScreen: React.FC = () => {
                   </Text>
                 )}
               </View>
-              <Button title="Delete" onPress={() => deleteUrl(info.item.url)} />
-              <Button
-                title="Update name"
+              <PressableButton
+                label="Delete"
+                onPress={() => deleteUrl(info.item.url)}
+              />
+              <PressableButton
+                label="Update name"
                 onPress={() => setSelectedUrl(info.item)}
               />
             </Pressable>
@@ -84,6 +87,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: 'white',
     flexDirection: 'row',
+    gap: 8,
   },
   urlContainer: {
     flex: 1,

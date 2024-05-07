@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {SavedUrl, useStoredUrlsMutation} from '../storage/useUrlStorage.ts';
 import {Popup} from '@components/Popup.tsx';
+import {PressableButton} from '@components/PressableButton.tsx';
 
 interface Props extends ModalProps {
   readonly onHideModal: () => void;
@@ -39,19 +40,17 @@ export const UpdateUrlNameModal: React.FC<Props> = props => {
             />
           </View>
           <View style={styles.buttonsContainer}>
-            <Pressable
-              style={styles.button}
-              onPress={() => props.onHideModal()}>
-              <Text style={styles.textStyle}>Cancel</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
+            <PressableButton
+              label="Cancel"
+              onPress={() => props.onHideModal()}
+            />
+            <PressableButton
+              label="Save"
               onPress={() => {
                 updateUrlName(props.url!.url, enteredName);
                 props.onHideModal();
-              }}>
-              <Text style={styles.textStyle}>Save</Text>
-            </Pressable>
+              }}
+            />
           </View>
         </View>
       </View>
@@ -91,6 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginVertical: 24,
     color: 'black',
+    padding: 12,
   },
   buttonsContainer: {
     flexDirection: 'row',
